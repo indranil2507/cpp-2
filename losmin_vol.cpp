@@ -23,7 +23,7 @@ void activityselection(double arr[], int n, double P)
 
 
     }
-    double result=0;
+    double result=0 ;
 
     for(int i=n;i>=1;i--){
         result += pow((1 - P), n - i) * res[i];   
