@@ -1,112 +1,50 @@
-// C++ program to find efficient
-// solution for the network
+// C++ program to find maximum array sum
+// after at most k negations.
 #include <bits/stdc++.h>
+
 using namespace std;
 
-// number of houses and number
-// of pipes
-int n, p;
-
-// Array rd stores the
-// ending vertex of pipe
-int rd[1100];
-
-// Array wd stores the value
-// of diameters between two pipes
-int wt[1100];
-
-// Array cd stores the
-// starting end of pipe
-int cd[1100];
-
-// Vector a, b, c are used
-// to store the final output
-vector<int> a;
-vector<int> b;
-vector<int> c;
-
-int ans;
-
-int dfs(int w)
+int sol(int arr[], int n, int k)
 {
-	if (cd[w] == 0)
-		return w;
-	if (wt[w] < ans)
-		ans = wt[w];
-	return dfs(cd[w]);
-}
-
-// Function performing calculations.
-void solve(int arr[][3])
-{
+	int sum = 0;
 	int i = 0;
 
-	while (i < p) {
-		
-		int q = arr[i][0], h = arr[i][1],
-			t = arr[i][2];
-		
-		cd[q] = h;
-		wt[q] = t;
-		rd[h] = q;
-		i++;
-	}
-    for (int i=0;i<n;i++){
-        cout<<cd[i]<<" ";
-    }
-    cout<<endl;
-      for (int i=0;i<n;i++){
-        cout<<rd[i]<<" ";
-    }
-    cout<<endl;
-      for (int i=0;i<n;i++){
-        cout<<wt[i]<<" ";
-    }
-    cout<<endl;
-	
-	a.clear();
-	b.clear();
-	c.clear();
-	
-	for (int j = 1; j <= n; ++j)
-	
-		/*If a pipe has no ending vertex
-		but has starting vertex i.e is
-		an outgoing pipe then we need
-		to start DFS with this vertex.*/
-		if (rd[j] == 0 && cd[j]) {
-			ans = 1000000000;
-			int w = dfs(j);
-			
-			// We put the details of component
-			// in final output array
-			a.push_back(j);
-			b.push_back(w);
-			c.push_back(ans);
+	// Sorting given array using in-built
+	// sort function
+	sort(arr, arr + n);
+	while (k > 0)
+	{
+		// If we find a 0 in our
+		// sorted array, we stop
+		if (arr[i] >= 0)
+			k = 0;
+		else
+		{
+			arr[i] = (-1) * arr[i];
+			k = k - 1;
 		}
+		i++;
 		
-	cout << a.size() << endl;
-	for (int j = 0; j < a.size(); ++j)
-		cout << a[j] << " " << b[j]
-			<< " " << c[j] << endl;
+	}
+
+	// Calculating sum
+	for(int j = 0; j < n; j++)
+	{
+		sum += arr[j];
+	}
+	return sum;
 }
 
-// driver function
+// Driver code
 int main()
 {
-	n = 9, p = 6;
+	int arr[] = { -2, 0, 5, -1, 2 };
 
-	memset(rd, 0, sizeof(rd));
-	memset(cd, 0, sizeof(cd));
-	memset(wt, 0, sizeof(wt));
+	int n = sizeof(arr) / sizeof(arr[0]);
+	
+	cout << sol(arr, n, 4) << endl;
 
-	int arr[][3] = { { 7, 4, 98 },
-					{ 5, 9, 72 },
-					{ 4, 6, 10 },
-					{ 2, 8, 22 },
-					{ 9, 7, 17 },
-					{ 3, 1, 66 } };
-
-	solve(arr);
 	return 0;
 }
+
+// This code is contributed by pratham76
